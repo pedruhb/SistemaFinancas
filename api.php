@@ -16,4 +16,8 @@ switch ($_GET["type"]) {
         require_once("system/api/auth.php");
         break;
 
+    case "get":
+        require_once("system/api/get.php");
+        break;
+
 }

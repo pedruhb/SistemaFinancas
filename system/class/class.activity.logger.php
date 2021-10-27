@@ -1,5 +1,6 @@
 <?php
 
+if (!defined("PHB")) die();
 class ActivityLogger
 {
 

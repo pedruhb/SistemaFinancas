@@ -1,5 +1,7 @@
 <?php
 
+if (!defined("PHB")) die();
+
 $settings = array(
 
     "php_debug" => true,

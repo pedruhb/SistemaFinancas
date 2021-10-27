@@ -49,6 +49,7 @@ function login($data)
 
     $_SESSION["id"] = $account["id"];
     $_SESSION["userAgent"] = $_SERVER['HTTP_USER_AGENT'];
+    $_SESSION['session_password'] = $account['password'];
 
     ActivityLogger::add("Logou no painel.");
 
@@ -121,6 +122,7 @@ function registration($data)
             $account = $getUserData->fetch();
             $_SESSION["id"] = $account["id"];
             $_SESSION["userAgent"] = $_SERVER['HTTP_USER_AGENT'];
+            $_SESSION['session_password'] = $account['password'];
             die(json_encode(array("success" => true, "message" => "Conta criada com sucesso!", "account" => array("id" => $account["id"], "first_name" => $account["first_name"], "last_name" => $account["last_name"], "mail" => $account["mail"], "currency" => $account["currency"]))));
         }
     } else {
