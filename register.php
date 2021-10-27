@@ -9,16 +9,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Register</title>
+    <title>Financeiro - Register</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 
@@ -35,24 +34,21 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Crie uma conta!</h1>
                             </div>
-                            <form class="user">
+                            <form class="user" id="register">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id=" FirstName"
-                                            placeholder="Primeiro nome">
+                                        <input type="text" class="form-control form-control-user" placeholder="Primeiro nome" name="firstname">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="LastName"
-                                            placeholder="Último nome">
+                                        <input type="text" class="form-control form-control-user" placeholder="Último nome" name="lastname">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-10 mb-3 mb-sm-0">
-                                        <input type="email" class="form-control form-control-user" id="InputEmail"
-                                            placeholder="Endereço de email">
+                                        <input type="email" class="form-control form-control-user" placeholder="Endereço de email" name="mail">
                                     </div>
                                     <div class="col-sm-2 mb-3 mb-sm-0">
-                                        <select id="CurrencyType" class="form-control form-control-user" style="padding: 3px 10px 0px 10px; height: 50px; ">
+                                        <select class="form-control form-control-user" style="padding: 3px 10px 0px 10px; height: 50px;" name="currency">
                                             <option disabled selected>Moeda</option>
                                             <option value="BRL">BRL R$</option>
                                             <option value="USD">USD $</option>
@@ -62,15 +58,14 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user" id="InputPassword"
-                                            placeholder="Senha">
+                                        <input type="password" class="form-control form-control-user" placeholder="Senha" name="password">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="RepeatPassword" placeholder="Repita sua senha">
+                                        <input type="password" class="form-control form-control-user" placeholder="Repita sua senha" name="repeat_password">
                                     </div>
                                 </div>
-                                <button class="btn btn-primary btn-user btn-block">
+                                <input type="hidden" name="csrf-token" value="">
+                                <button type="submit" class="btn btn-primary btn-user btn-block" id="botaoRegistrar">
                                     Registrar
                                 </button>
                             </form>
@@ -98,6 +93,12 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- Sistema JS -->
+    <script src="js/phb/global.js"></script>
+    <script src="js/phb/register.js"></script>
 
 </body>
 

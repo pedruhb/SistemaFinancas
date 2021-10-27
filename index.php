@@ -1,6 +1,16 @@
+<?php
+
+require_once("system/global.php");
+
+if(!isset($_SESSION['id'])){
+    header("Location: /login");
+    return;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8">
@@ -494,7 +504,7 @@
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; Financeiro
-                            <?= date("Y", time())> - by PHB</span>
+                            <?= date("Y", time()) ?> - by PHB</span>
                     </div>
                 </div>
             </footer>
