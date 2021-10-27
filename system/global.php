@@ -13,6 +13,7 @@ if ($settings["php_debug"]) {
 /// Carrega classes
 require_once("./system/class/class.db.php");
 require_once("./system/class/class.error.handler.php");
+require_once("./system/class/class.activity.logger.php");
 
 new ErrorHandler();
 

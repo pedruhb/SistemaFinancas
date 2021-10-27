@@ -38,7 +38,7 @@ function login($data)
     $login->execute();
 
     if ($login->rowCount() == 0) {
-        die(json_encode(array("success" => false, "message" => "Não há contas nesse email.")));
+        die(json_encode(array("success" => false, "message" => "Não há conta nesse email.")));
     }
 
     $account = $login->fetch();
@@ -49,6 +49,8 @@ function login($data)
 
     $_SESSION["id"] = $account["id"];
     $_SESSION["userAgent"] = $_SERVER['HTTP_USER_AGENT'];
+
+    ActivityLogger::add("Logou no painel.");
 
     die(json_encode(array("success" => true, "message" => "Autenticação realizada com sucesso!", "account" => array("id" => $account["id"], "first_name" => $account["first_name"], "last_name" => $account["last_name"], "mail" => $account["mail"], "currency" => $account["currency"]))));
 }
