@@ -47,6 +47,12 @@ function login($data)
         die(json_encode(array("success" => false, "message" => "Senha inválida!")));
     }
 
+    $atualizarDados = Database::connection()->prepare("UPDATE users SET last_ip = ?, last_time = ? WHERE id = ?");
+    $atualizarDados->bindValue(1, getUserIp());
+    $atualizarDados->bindValue(2, time());
+    $atualizarDados->bindValue(3, $account["id"]);
+    $atualizarDados->execute();
+
     $_SESSION["id"] = $account["id"];
     $_SESSION["userAgent"] = $_SERVER['HTTP_USER_AGENT'];
     $_SESSION['session_password'] = $account['password'];
@@ -88,7 +94,7 @@ function registration($data)
         die(json_encode(array("success" => false, "message" => "Último nome inválido!")));
     }
 
-    if (!isset($data["currency"]) && !in_array($data["currency"], $settings["allowed_currencys"])) {
+    if (!isset($data["currency"]) || !array_key_exists($data["currency"], $settings["allowed_currencys"])) {
         die(json_encode(array("success" => false, "message" => "Moeda inválida!")));
     }
 

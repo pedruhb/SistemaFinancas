@@ -13,7 +13,7 @@ $settings = array(
         "db" => "financas"
     ),
 
-    "allowed_currencys" => array("BRL", "USD", "EUR"),
+    "allowed_currencys" => array("BRL" => "R$", "USD" => "$", "EUR" => "€"),
 
     "mail" => array(
         "host" => "",

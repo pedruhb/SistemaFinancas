@@ -90,9 +90,6 @@
                  <a class="collapse-item" href="/bancos">Bancos</a>
                  <a class="collapse-item" href="/cartoes">Cartões</a>
                  <div class="collapse-divider"></div>
-                 <h6 class="collapse-header">Sistema</h6>
-                 <a class="collapse-item" href="/change-password">Trocar Senha</a>
-                 <a class="collapse-item" href="/settings">Configurações</a>
              </div>
          </div>
      </li>
@@ -211,7 +208,7 @@
                      </a>
                      <!-- Dropdown - User Information -->
                      <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                         <a class="dropdown-item" href="#">
+                         <a class="dropdown-item" href="/settings">
                              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                              Configurações
                          </a>

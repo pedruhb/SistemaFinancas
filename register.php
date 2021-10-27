@@ -50,9 +50,11 @@
                                     <div class="col-sm-2 mb-3 mb-sm-0">
                                         <select class="form-control form-control-user" style="padding: 3px 10px 0px 10px; height: 50px;" name="currency">
                                             <option disabled selected>Moeda</option>
-                                            <option value="BRL">BRL R$</option>
-                                            <option value="USD">USD $</option>
-                                            <option value="EUR">EUR €</option>
+                                            <?php
+                                            foreach ($settings["allowed_currencys"] as $name => $simbolo) {
+                                                echo '<option value="' . $name . '">' . $name . ' - ' . $simbolo . '</option>' . "\n";
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>

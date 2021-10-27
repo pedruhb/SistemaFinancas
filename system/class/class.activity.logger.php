@@ -25,7 +25,7 @@ class ActivityLogger
       $insertLog->bindValue(4, time());
       $insertLog->execute();
 
-      if ((bool) $userData["discord_log_webhook_enabled"]) {
+      if ($userData["discord_log_webhook_enabled"] == "true") {
         $embed = json_encode([
           "content" => "",
           "embeds" => [
