@@ -78,20 +78,26 @@
      <div class="sidebar-heading">
          Configurações
      </div>
+     <?php $categoriasConfig = array("bancos", "cartoes", "categorias_ganhos", "categorias_gastos"); ?>
      <!-- Nav Item - Pages Collapse Menu -->
-     <li class="nav-item">
-         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+     <li class="nav-item <?= in_array($selectedPage, $categoriasConfig) ? "active" : ""; ?>">
+         <a class="nav-link <?= in_array($selectedPage, $categoriasConfig) ? "collapsed" : ""; ?>" href=" #" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
              <i class="fas fa-fw fa-folder"></i>
              <span>Configurações</span>
          </a>
-         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+         <div id="collapsePages" class="collapse <?= in_array($selectedPage, $categoriasConfig) ? "show" : ""; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
              <div class="bg-white py-2 collapse-inner rounded">
                  <h6 class="collapse-header">Bancos e cartões</h6>
-                 <a class="collapse-item" href="/bancos">Bancos</a>
-                 <a class="collapse-item" href="/cartoes">Cartões</a>
+                 <a class="collapse-item <?= ($selectedPage == "bancos") ? "active" : ""; ?>" href="/bancos">Bancos</a>
+                 <a class="collapse-item <?= ($selectedPage == "cartoes") ? "active" : ""; ?>" href="/cartoes">Cartões</a>
+                 <div class="collapse-divider"></div>
+                 <h6 class="collapse-header">Categorias</h6>
+                 <a class="collapse-item <?= ($selectedPage == "categorias_ganhos") ? "active" : ""; ?>" href="/categorias/ganhos">Ganhos</a>
+                 <a class="collapse-item <?= ($selectedPage == "categorias_gastos") ? "active" : ""; ?>" href="/categorias/gastos">Gastos</a>
                  <div class="collapse-divider"></div>
              </div>
          </div>
+
      </li>
 
      <!-- Divider -->
@@ -204,7 +210,7 @@
                  <li class="nav-item dropdown no-arrow">
                      <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $accountData["first_name"]; ?></span>
-                         <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                         <img class="img-profile rounded-circle" src="/img/undraw_profile.svg">
                      </a>
                      <!-- Dropdown - User Information -->
                      <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

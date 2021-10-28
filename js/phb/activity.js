@@ -7,7 +7,10 @@ $("#activity").DataTable({
         "dataType": "json",
     },
     "columns": [{
-        data: "log"
+        data: null,
+        render: function (d, t, r) {
+            return htmlEncode(r.log);
+        }
     },
     {
         data: "ip"

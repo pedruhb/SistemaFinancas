@@ -8,16 +8,10 @@ if (!isset($_SESSION["id"])) {
     die(json_encode(array("success" => false, "message" => "Invalid Session")));
 }
 
-switch ($_GET["method"]) {
-
-    case "activity":
-        activity();
-        break;
-
-    default:
-        die(json_encode(array("success" => false, "message" => "Invalid Method!")));
-        break;
-}
+match ($_GET["method"]) {
+    "activity" => activity(),
+    default => die(json_encode(array("success" => false, "message" => "Invalid Method!")))
+};
 
 function activity()
 {

@@ -12,3 +12,9 @@ function getCsrfToken() {
 $(document).ready(function() {
     $("[name='csrf-token']").val(getCsrfToken());
 });
+
+function htmlEncode(str){
+    return String(str).replace(/[^\w. ]/gi, function(c){
+       return '&#'+c.charCodeAt(0)+';';
+    });
+  }

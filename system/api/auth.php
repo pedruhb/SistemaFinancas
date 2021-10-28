@@ -4,24 +4,15 @@ if (!defined("PHB")) die();
 
 require_once("./system/global.php");
 
-switch ($_GET["method"]) {
-
-    case "login":
-        login($_POST);
-        break;
-
-    case "registration":
-        registration($_POST);
-        break;
-
-    default:
-        die(json_encode(array("success" => false, "message" => "Invalid Method!")));
-        break;
-}
+match ($_GET['method']) {
+    "login" => login($_POST),
+    "registration" => registration($_POST),
+    default => die(json_encode(array("success" => false, "message" => "Invalid Method!")))
+};
 
 function login($data)
 {
-    if ($data["csrf-token"] != $_COOKIE["csrf-token"]) {
+    if (!isset($data["csrf-token"]) || $data["csrf-token"] != $_COOKIE["csrf-token"]) {
         die(json_encode(array("success" => false, "message" => "Token inválido!")));
     }
 
@@ -66,7 +57,7 @@ function registration($data)
 {
     global $settings;
 
-    if ($data["csrf-token"] != $_COOKIE["csrf-token"]) {
+    if (!isset($data["csrf-token"]) || $data["csrf-token"] != $_COOKIE["csrf-token"]) {
         die(json_encode(array("success" => false, "message" => "Token inválido!")));
     }
 

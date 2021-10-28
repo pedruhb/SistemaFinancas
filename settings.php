@@ -50,7 +50,7 @@ $selectedPage = "settings";
 
             <!-- Page Heading -->
             <h1 class="h3 mb-2 text-gray-800">Configurações</h1>
-            <p class="mb-4">Ajuste as configurações da sua conta</a>.</p>
+            <p class="mb-4">Ajuste as configurações da sua conta.</p>
 
             <!-- DataTales Example -->
             <div class="card shadow mb-4">

@@ -50,7 +50,7 @@ $selectedPage = "activity";
 
             <!-- Page Heading -->
             <h1 class="h3 mb-2 text-gray-800">Atividades</h1>
-            <p class="mb-4">Confira aqui o registro de atividades do painel</a>.</p>
+            <p class="mb-4">Confira aqui o registro de atividades do painel.</p>
 
             <!-- DataTales Example -->
             <div class="card shadow mb-4">

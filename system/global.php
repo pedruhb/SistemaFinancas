@@ -1,5 +1,7 @@
 <?php
 
+if (PHP_VERSION < 8) die("Você precisa de PHP 8 ou superior para rodar essa aplicação.");
+
 session_start();
 
 define("PHB", 1);
@@ -49,7 +51,7 @@ if (isset($_SESSION['id'])) {
         return;
     } else {
         $accountData = $getUser->fetch();
-        if($accountData["password"] != $_SESSION['session_password']){
+        if ($accountData["password"] != $_SESSION['session_password']) {
             header("Location: /logout");
             return;
         }
