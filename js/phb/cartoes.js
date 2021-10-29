@@ -1,15 +1,15 @@
-var categoriasList = {};
+var cartoesList = {};
 
-$("#categorias").DataTable({
+$("#cartoes").DataTable({
     "language": {
         "url": '/js/datatables_pt_br.json'
     },
     "ajax": {
-        "url": "/api/categorias/ganhos",
+        "url": "/api/cartoes/get",
         "dataType": "json",
     },
     "initComplete": function (settings, json) {
-        categoriasList = json.data;
+        cartoesList = json.data;
     },
     "columns": [{
         data: null,
@@ -19,8 +19,20 @@ $("#categorias").DataTable({
     },
     {
         data: null,
-        render: function (data, type, row) {
-            return '<a class="btn btn-danger" style="background-color:' + row.cor_hex + ';border-color:' + row.cor_hex + ';cursor: default;">' + htmlEncode(row.cor_hex) + '</a>';
+        render: function (d, t, r) {
+            return htmlEncode(r.emissor);
+        }
+    },
+    {
+        data: null,
+        render: function (d, t, r) {
+            return htmlEncode(r.ultimos_digitos);
+        }
+    },
+    {
+        data: null,
+        render: function (d, t, r) {
+            return htmlEncode(r.bandeira);
         }
     },
     {
@@ -36,10 +48,13 @@ $("#categorias").DataTable({
 });
 
 function editar(id) {
-    var categoria = categoriasList.find(x => x.id == id);
-    $("#editar input[name='nome']").val(categoria.nome);
-    $("#editar input[name='cor']").val(categoria.cor_hex);
-    $("#editar input[name='id']").val(categoria.id);
+    var cartao = cartoesList.find(x => x.id == id);
+    $("#editar select[name='bandeira']").val(cartao.bandeira);
+    $("#editar input[name='nome']").val(cartao.nome);
+    $("#editar input[name='emissor']").val(cartao.emissor);
+    $("#editar input[name='ultimos']").val(cartao.ultimos_digitos);
+    $("#editar textarea[name='observacoes']").val(cartao.observacoes);
+    $("#editar input[name='id']").val(id);
     $("#editarModal").modal("show");
 }
 
@@ -52,39 +67,43 @@ function apagar(id) {
     $("#apagar input[name='id']").val(id);
 }
 
-function addCategoria() {
+function addCartao() {
     $("#adicionarModal").modal("show");
 }
 
 $("#editar").submit(function (e) {
-
     $("#botaoEditar").prop("disabled", true);
     e.preventDefault();
-
     var form = $(this);
 
-    if (String(form[0].nome.value).length < 3 || String(form[0].nome.value).length > 50) {
+    if (String(form[0].nome.value).length < 2) {
         toastr.error("O nome é inválido!");
         $("#botaoEditar").prop("disabled", false);
         return;
     }
 
-    if (!String(form[0].cor.value).startsWith("#")) {
-        toastr.error("Cor inválida!");
+    if (String(form[0].ultimos.value).length != 4) {
+        toastr.error("Os últimos 4 dígitos é inválido!");
+        $("#botaoEditar").prop("disabled", false);
+        return;
+    }
+
+    if (String(form[0].emissor.value).length < 2) {
+        toastr.error("O emissor é inválido!");
         $("#botaoEditar").prop("disabled", false);
         return;
     }
 
     $.ajax({
         type: "POST",
-        url: "/api/categorias/editar_ganhos",
+        url: "/api/cartoes/salvar",
         data: form.serialize(),
         dataType: 'json',
         success: function (data) {
             if (data.success) {
-                categoriasList = data.data;
-                $("#categorias").DataTable().clear();
-                $("#categorias").DataTable().rows.add(data.data).draw();
+                cartoesList = data.data;
+                $("#cartoes").DataTable().clear();
+                $("#cartoes").DataTable().rows.add(data.data).draw();
                 $("#editarModal").modal("hide");
                 toastr.success(data.message);
                 $("#botaoEditar").prop("disabled", false);
@@ -94,50 +113,55 @@ $("#editar").submit(function (e) {
             }
         }
     });
-
 });
 
 $("#adicionar").submit(function (e) {
-
     $("#botaoAdicionar").prop("disabled", true);
     e.preventDefault();
-
     var form = $(this);
 
-    if (String(form[0].nome.value).length < 3 || String(form[0].nome.value).length > 50) {
+    if (String(form[0].nome.value).length < 2) {
         toastr.error("O nome é inválido!");
         $("#botaoAdicionar").prop("disabled", false);
         return;
     }
 
-    if (!String(form[0].cor.value).startsWith("#")) {
-        toastr.error("Cor inválida!");
+    if (String(form[0].ultimos.value).length != 4) {
+        toastr.error("Os últimos 4 dígitos é inválido!");
+        $("#botaoAdicionar").prop("disabled", false);
+        return;
+    }
+
+    if (String(form[0].emissor.value).length < 2) {
+        toastr.error("O emissor é inválido!");
         $("#botaoAdicionar").prop("disabled", false);
         return;
     }
 
     $.ajax({
         type: "POST",
-        url: "/api/categorias/add_ganhos",
+        url: "/api/cartoes/adicionar",
         data: form.serialize(),
         dataType: 'json',
         success: function (data) {
             if (data.success) {
-                categoriasList = data.data;
-                $("#categorias").DataTable().clear();
-                $("#categorias").DataTable().rows.add(data.data).draw();
+                cartoesList = data.data;
+                $("#cartoes").DataTable().clear();
+                $("#cartoes").DataTable().rows.add(data.data).draw();
                 toastr.success(data.message);
                 $("#adicionarModal").modal("hide");
                 $("#botaoAdicionar").prop("disabled", false);
-                $("#adicionar input[name='nome']").val("");
-                $("#adicionar input[name='cor']").val("");
+                $("#adicionar select[name='nome']").val("");
+                $("#adicionar input[name='bandeira']").val("");
+                $("#adicionar input[name='emissor']").val("");
+                $("#adicionar input[name='ultimos']").val("");
+                $("#adicionar textarea[name='observacoes']").val("");
             } else {
                 toastr.error(data.message);
                 $("#botaoAdicionar").prop("disabled", false);
             }
         }
     });
-
 });
 
 $("#apagar").submit(function (e) {
@@ -149,14 +173,14 @@ $("#apagar").submit(function (e) {
 
     $.ajax({
         type: "POST",
-        url: "/api/categorias/apagar_ganhos",
+        url: "/api/cartoes/apagar",
         data: form.serialize(),
         dataType: 'json',
         success: function (data) {
             if (data.success) {
-                categoriasList = data.data;
-                $("#categorias").DataTable().clear();
-                $("#categorias").DataTable().rows.add(data.data).draw();
+                cartoesList = data.data;
+                $("#cartoes").DataTable().clear();
+                $("#cartoes").DataTable().rows.add(data.data).draw();
                 $("#apagarModal").modal("hide");
                 toastr.success(data.message);
                 $("#botaoApagar").prop("disabled", false);
@@ -167,4 +191,20 @@ $("#apagar").submit(function (e) {
         }
     });
 
+});
+
+$(document).ready(function () {
+    $.ajax({
+        url: "/api/cartoes/bandeiras",
+        dataType: 'json',
+        success: function (data) {
+            if (data.success) {
+                for (i = 0; i < data.data.length; i++) {
+                    $("select[name='bandeira']").append("<option>" + data.data[i] + "</option>");
+                }
+            } else {
+                toastr.error(data.message);
+            }
+        }
+    });
 });

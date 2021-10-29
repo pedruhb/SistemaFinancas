@@ -12,10 +12,16 @@ $("#bancos").DataTable({
         bancosList = json.data;
     },
     "columns": [{
-        data: "banco"
+        data: null,
+        render: function (d, t, r) {
+            return htmlEncode(r.banco);
+        }
     },
     {
-        data: "agencia"
+        data: null,
+        render: function (d, t, r) {
+            return htmlEncode(r.agencia);
+        }
     },
     {
         data: null,
@@ -87,7 +93,7 @@ $("#editar").submit(function (e) {
                 $("#bancos").DataTable().clear();
                 $("#bancos").DataTable().rows.add(data.data).draw();
                 $("#editarModal").modal("hide");
-                toastr.success("A conta foi editada com sucesso!");
+                toastr.success(data.message);
                 $("#botaoEditar").prop("disabled", false);
             } else {
                 toastr.error(data.message);
@@ -124,7 +130,7 @@ $("#adicionar").submit(function (e) {
                 bancosList = data.data;
                 $("#bancos").DataTable().clear();
                 $("#bancos").DataTable().rows.add(data.data).draw();
-                toastr.success("A conta foi adicionada com sucesso!");
+                toastr.success(data.message);
                 $("#adicionarModal").modal("hide");
                 $("#botaoAdicionar").prop("disabled", false);
                 $("#adicionar select[name='banco']").val("");

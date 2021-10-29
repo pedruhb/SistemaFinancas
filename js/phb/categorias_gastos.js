@@ -86,7 +86,7 @@ $("#editar").submit(function (e) {
                 $("#categorias").DataTable().clear();
                 $("#categorias").DataTable().rows.add(data.data).draw();
                 $("#editarModal").modal("hide");
-                toastr.success("A categoria foi editada com sucesso!");
+                toastr.success(data.message);
                 $("#botaoEditar").prop("disabled", false);
             } else {
                 toastr.error(data.message);
@@ -126,7 +126,7 @@ $("#adicionar").submit(function (e) {
                 categoriasList = data.data;
                 $("#categorias").DataTable().clear();
                 $("#categorias").DataTable().rows.add(data.data).draw();
-                toastr.success("A categoria foi adicionada com sucesso!");
+                toastr.success(data.message);
                 $("#adicionarModal").modal("hide");
                 $("#botaoAdicionar").prop("disabled", false);
                 $("#adicionar input[name='nome']").val("");
