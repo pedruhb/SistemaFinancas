@@ -57,3 +57,13 @@ if (isset($_SESSION['id'])) {
         }
     }
 }
+
+function bancosBrasileiros()
+{
+    if (file_exists("./system/data/bancos.json")) {
+        $arquivo = file_get_contents("./system/data/bancos.json");
+        return json_decode($arquivo);
+    } else {
+        echo "O arquivo bancos.json não existe!";
+    }
+}

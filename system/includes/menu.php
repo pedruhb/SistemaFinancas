@@ -10,41 +10,33 @@
          <div class="sidebar-brand-text mx-3">Financeiro <sup>by PHB</sup></div>
      </a>
 
-     <!-- Divider -->
      <hr class="sidebar-divider my-0">
 
-     <!-- Nav Item - Dashboard -->
      <li class="nav-item <?= $selectedPage == "dashboard" ? "active" : ""; ?>">
          <a class=" nav-link" href="/index">
              <i class="fas fa-fw fa-tachometer-alt"></i>
              <span>Dashboard</span></a>
      </li>
 
-     <!-- Divider -->
      <hr class="sidebar-divider">
      <div class="sidebar-heading">
          Registro
      </div>
-     <!-- Nav Item - Charts -->
-     <li class="nav-item">
+     <li class="nav-item <?= $selectedPage == "add-entrada" ? "active" : ""; ?>">
          <a class="nav-link" href="/add-entrada">
              <i class="fas fa-fw fa-chart-area"></i>
              <span>Cadastrar entrada</span></a>
      </li>
-     <!-- Nav Item - Charts -->
-     <li class="nav-item">
+     <li class="nav-item <?= $selectedPage == "add-saida" ? "active" : ""; ?>">
          <a class="nav-link" href="/add-saida">
              <i class="fas fa-fw fa-chart-area"></i>
              <span>Cadastrar saída</span></a>
      </li>
 
-     <!-- Divider -->
      <hr class="sidebar-divider">
-     <!-- Heading -->
      <div class="sidebar-heading">
          Relatórios
      </div>
-     <!-- Nav Item - Pages Collapse Menu -->
      <li class="nav-item">
          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
              <i class="fas fa-fw fa-cog"></i>
@@ -58,7 +50,6 @@
              </div>
          </div>
      </li>
-
      <li class="nav-item">
          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
              <i class="fas fa-fw fa-cog"></i>
@@ -74,12 +65,10 @@
      </li>
 
      <hr class="sidebar-divider">
-     <!-- Heading -->
      <div class="sidebar-heading">
          Configurações
      </div>
      <?php $categoriasConfig = array("bancos", "cartoes", "categorias_ganhos", "categorias_gastos"); ?>
-     <!-- Nav Item - Pages Collapse Menu -->
      <li class="nav-item <?= in_array($selectedPage, $categoriasConfig) ? "active" : ""; ?>">
          <a class="nav-link <?= in_array($selectedPage, $categoriasConfig) ? "collapsed" : ""; ?>" href=" #" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
              <i class="fas fa-fw fa-folder"></i>
@@ -97,10 +86,8 @@
                  <div class="collapse-divider"></div>
              </div>
          </div>
-
      </li>
 
-     <!-- Divider -->
      <hr class="sidebar-divider d-none d-md-block">
 
      <!-- Sidebar Toggler (Sidebar) -->
