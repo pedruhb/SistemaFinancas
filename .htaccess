@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteRule ^api/(.*)/(.*)    /api.php?type=$1&method=$2
+RewriteRule ^categorias/(.*)    /categorias.php?type=$1
+RewriteRule ^([^\.]+)$    $1.php
