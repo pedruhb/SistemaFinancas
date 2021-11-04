@@ -1,3 +1,14 @@
+<?php
+
+require_once("system/global.php");
+
+if (isset($_SESSION['id'])) {
+    header("Location: /index");
+    return;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
