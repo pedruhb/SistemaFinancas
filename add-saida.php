@@ -7,7 +7,7 @@ if (!isset($_SESSION['id'])) {
     return;
 }
 
-$selectedPage = "add-entrada";
+$selectedPage = "add-saida";
 
 ?>
 
@@ -22,7 +22,7 @@ $selectedPage = "add-entrada";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Financeiro - Cadastrar Entrada</title>
+    <title>Financeiro - Cadastrar Saída</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -51,20 +51,20 @@ $selectedPage = "add-entrada";
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Cadastrar Entrada</h1>
-            <p class="mb-4">Adicione uma entrada em sua situação financeira</p>
+            <h1 class="h3 mb-2 text-gray-800">Cadastrar Saída</h1>
+            <p class="mb-4">Adicione uma saída em sua situação financeira</p>
 
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Cadastrar Entrada</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Cadastrar Saída</h6>
                 </div>
                 <div class="card-body">
                     <form id="form">
                         <div class="row">
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">Nome</label>
-                                <input type="text" class="form-control" name="nome" placeholder="Exemplo: Salário">
+                                <input type="text" class="form-control" name="nome" placeholder="Exemplo: Conta de Luz">
                             </div>
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">Valor</label>
@@ -81,7 +81,7 @@ $selectedPage = "add-entrada";
                                 <select class="form-control" name="categoria">
                                     <option value="0">Sem categoria</option>
                                     <?php
-                                    $getCategorias = Database::connection()->prepare("SELECT * FROM categorias_ganhos WHERE user_id = ?");
+                                    $getCategorias = Database::connection()->prepare("SELECT * FROM categorias_gastos WHERE user_id = ?");
                                     $getCategorias->bindValue(1, $_SESSION['id']);
                                     $getCategorias->execute();
                                     while ($categoria = $getCategorias->fetch()) {
@@ -137,7 +137,7 @@ $selectedPage = "add-entrada";
 
     <!-- Sistema JS -->
     <script src="js/phb/global.js"></script>
-    <script src="js/phb/add-entrada.js"></script>
+    <script src="js/phb/add-saida.js"></script>
 
     <script src="js/jquery.mask.min.js"></script>
     <script>

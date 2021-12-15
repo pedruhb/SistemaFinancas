@@ -52,8 +52,33 @@ $selectedPage = "dashboard";
 
             <!-- Content Row -->
             <div class="row">
+                <?php
+                $pegaGanhosMensal = Database::connection()->prepare("SELECT SUM(valor) AS total FROM ganhos WHERE user_id = ? AND from_unixtime(data, \"%Y-%m\") = ?");
+                $pegaGanhosMensal->bindValue(1, $_SESSION["id"]);
+                $pegaGanhosMensal->bindValue(2, date("Y-m"));
+                $pegaGanhosMensal->execute();
+                $totalGanhosMensal = $pegaGanhosMensal->fetch()["total"];
 
-                <!-- Earnings (Monthly) Card Example -->
+                $pegaGanhosAnual = Database::connection()->prepare("SELECT SUM(valor) AS total FROM ganhos WHERE user_id = ? AND from_unixtime(data, \"%Y\") = ?");
+                $pegaGanhosAnual->bindValue(1, $_SESSION["id"]);
+                $pegaGanhosAnual->bindValue(2, date("Y"));
+                $pegaGanhosAnual->execute();
+                $totalGanhosAnual = $pegaGanhosAnual->fetch()["total"];
+
+                $pegaGastosMensal = Database::connection()->prepare("SELECT SUM(valor) AS total FROM gastos WHERE user_id = ? AND from_unixtime(data, \"%Y-%m\") = ?");
+                $pegaGastosMensal->bindValue(1, $_SESSION["id"]);
+                $pegaGastosMensal->bindValue(2, date("Y-m"));
+                $pegaGastosMensal->execute();
+                $totalGastosMensal = $pegaGastosMensal->fetch()["total"];
+
+                $pegaGastosAnual = Database::connection()->prepare("SELECT SUM(valor) AS total FROM gastos WHERE user_id = ? AND from_unixtime(data, \"%Y\") = ?");
+                $pegaGastosAnual->bindValue(1, $_SESSION["id"]);
+                $pegaGastosAnual->bindValue(2, date("Y"));
+                $pegaGastosAnual->execute();
+                $totalGastosAnual = $pegaGastosAnual->fetch()["total"];
+
+                ?>
+                <!-- Ganhos mensal -->
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
@@ -61,7 +86,7 @@ $selectedPage = "dashboard";
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Ganhos (Mensal)</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $settings["allowed_currencys"][$accountData["currency"]]; ?> <?= $totalGanhosMensal > 0 ? $totalGanhosMensal : 0; ?></div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -70,16 +95,15 @@ $selectedPage = "dashboard";
                         </div>
                     </div>
                 </div>
-
-                <!-- Earnings (Monthly) Card Example -->
+                <!-- Ganhos anual -->
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Ganhos (Anual)</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $settings["allowed_currencys"][$accountData["currency"]]; ?> <?= $totalGanhosAnual > 0 ? $totalGanhosAnual : 0; ?></div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -89,45 +113,35 @@ $selectedPage = "dashboard";
                     </div>
                 </div>
 
-                <!-- Earnings (Monthly) Card Example -->
+                <!-- Gastos mensal -->
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card border-left-danger shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Limite
-                                        Mensal</div>
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="progress progress-sm mr-2">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        Gastos (Mensal)</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $settings["allowed_currencys"][$accountData["currency"]]; ?> <?= $totalGastosMensal > 0 ? $totalGastosMensal : 0; ?></div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-coins fa-2x text-gray-300"></i>
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Pending Requests Card Example -->
+                <!-- Gastos anual -->
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card border-left-danger shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        Cartões cadastrados</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        Gastos (Anual)</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $settings["allowed_currencys"][$accountData["currency"]]; ?> <?= $totalGastosAnual > 0 ? $totalGastosAnual : 0; ?></div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-credit-card fa-2x text-gray-300"></i>
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
@@ -173,15 +187,14 @@ $selectedPage = "dashboard";
                                 <canvas id="pieGanhos"></canvas>
                             </div>
                             <div class="mt-4 text-center small">
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-primary"></i> Direct
-                                </span>
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-success"></i> Social
-                                </span>
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-info"></i> Referral
-                                </span>
+                                <?php
+                                $getCategorias = Database::connection()->prepare("SELECT * FROM categorias_ganhos WHERE user_id = ?");
+                                $getCategorias->bindValue(1, $_SESSION['id']);
+                                $getCategorias->execute();
+                                while ($categoria = $getCategorias->fetch()) {
+                                    echo '<span class="mr-2"><i class="fas fa-circle text-primary" style="color:' . htmlspecialchars($categoria["cor_hex"]) . '!important"></i> ' . htmlspecialchars($categoria["nome"]) . '</span>' . "\n";
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -225,15 +238,14 @@ $selectedPage = "dashboard";
                                 <canvas id="pieGastos"></canvas>
                             </div>
                             <div class="mt-4 text-center small">
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-primary"></i> Direct
-                                </span>
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-success"></i> Social
-                                </span>
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-info"></i> Referral
-                                </span>
+                                <?php
+                                $getCategorias = Database::connection()->prepare("SELECT * FROM categorias_gastos WHERE user_id = ?");
+                                $getCategorias->bindValue(1, $_SESSION['id']);
+                                $getCategorias->execute();
+                                while ($categoria = $getCategorias->fetch()) {
+                                    echo '<span class="mr-2"><i class="fas fa-circle text-primary" style="color:' . htmlspecialchars($categoria["cor_hex"]) . '!important"></i> ' . htmlspecialchars($categoria["nome"]) . '</span>' . "\n";
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -247,7 +259,7 @@ $selectedPage = "dashboard";
     <!-- End of Main Content -->
 
     <?php require_once("system/includes/footer.php"); ?>
-    
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -262,8 +274,7 @@ $selectedPage = "dashboard";
     <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/phb/index.js"></script>
 
 </body>
 

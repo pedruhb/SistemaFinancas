@@ -66,7 +66,7 @@ function salvar($data)
         die(json_encode(array("success" => false, "message" => "ID inválido!")));
     }
 
-    $verificaExiste = Database::connection()->prepare("SELECT id FROM cartoes WHERE id = ? AND user_id = ?");
+    $verificaExiste = Database::connection()->prepare("SELECT id, ultimos_digitos FROM cartoes WHERE id = ? AND user_id = ?");
     $verificaExiste->bindValue(1, $data["id"]);
     $verificaExiste->bindValue(2, $_SESSION["id"]);
     $verificaExiste->execute();
@@ -74,6 +74,8 @@ function salvar($data)
     if ($verificaExiste->rowCount() != 1) {
         die(json_encode(array("success" => false, "message" => "Cartão inválido!")));
     }
+
+    $cartao = $verificaExiste->fetch();
 
     $edita = Database::connection()->prepare("UPDATE cartoes SET nome = ?, emissor = ?, ultimos_digitos = ?, bandeira = ?, observacoes = ? WHERE id = ?");
     $edita->bindValue(1, $data["nome"]);
@@ -83,6 +85,8 @@ function salvar($data)
     $edita->bindValue(5, $data["observacoes"]);
     $edita->bindValue(6, $data["id"]);
     $edita->execute();
+
+    ActivityLogger::add("Editou o cartão final " + $cartao["ultimos_digitos"] + ".");
 
     die(json_encode(array("success" => true, "message" => "Cartão editado com sucesso!", "data" => obterCartoesUsuario()), JSON_PRETTY_PRINT));
 }
@@ -132,6 +136,8 @@ function adicionar($data)
     $edita->bindValue(6, $data["observacoes"]);
     $edita->execute();
 
+    ActivityLogger::add("Adicionou um cartão final " + $data["ultimos"] + ".");
+
     die(json_encode(array("success" => true, "message" => "Cartão adicionado com sucesso!", "data" => obterCartoesUsuario()), JSON_PRETTY_PRINT));
 }
 
@@ -145,7 +151,7 @@ function apagar($data)
         die(json_encode(array("success" => false, "message" => "ID inválido!")));
     }
 
-    $verificaExiste = Database::connection()->prepare("SELECT id FROM cartoes WHERE id = ? AND user_id = ?");
+    $verificaExiste = Database::connection()->prepare("SELECT id, ultimos_digitos FROM cartoes WHERE id = ? AND user_id = ?");
     $verificaExiste->bindValue(1, $data["id"]);
     $verificaExiste->bindValue(2, $_SESSION["id"]);
     $verificaExiste->execute();
@@ -153,6 +159,11 @@ function apagar($data)
     if ($verificaExiste->rowCount() != 1) {
         die(json_encode(array("success" => false, "message" => "Cartão inválido!")));
     }
+
+    $cartao = $verificaExiste->fetch();
+
+    ActivityLogger::add("Adicionou um cartão final " + $cartao["ultimos_digitos"] + ".");
+
 
     /* INSERIR CÓDIGO PARA REMOVER O CARTAO DOS LANÇAMENTOS */
 

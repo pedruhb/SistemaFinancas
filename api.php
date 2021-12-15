@@ -16,5 +16,7 @@ match ($_GET['type']) {
     "categorias" => require_once("system/api/categorias.php"),
     "bancos" => require_once("system/api/bancos.php"),
     "cartoes" => require_once("system/api/cartoes.php"),
+    "entrada" => require_once("system/api/entrada.php"),
+    "saida" => require_once("system/api/saida.php"),
     default => die(json_encode(array("success" => false, "message" => "Invalid Type")))
 };

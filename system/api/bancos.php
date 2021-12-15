@@ -74,7 +74,7 @@ function salvar($data)
         die(json_encode(array("success" => false, "message" => "ID inválido!")));
     }
 
-    $verificaExiste = Database::connection()->prepare("SELECT id FROM bancos WHERE id = ? AND user_id = ?");
+    $verificaExiste = Database::connection()->prepare("SELECT id, banco, conta, digito FROM bancos WHERE id = ? AND user_id = ?");
     $verificaExiste->bindValue(1, $data["id"]);
     $verificaExiste->bindValue(2, $_SESSION["id"]);
     $verificaExiste->execute();
@@ -82,6 +82,8 @@ function salvar($data)
     if ($verificaExiste->rowCount() != 1) {
         die(json_encode(array("success" => false, "message" => "Conta bancária inválida!")));
     }
+
+    $conta = $verificaExiste->fetch();
 
     $edita = Database::connection()->prepare("UPDATE bancos SET banco = ?, agencia = ?, conta = ?, digito = ?, observacoes = ? WHERE id = ?");
     $edita->bindValue(1, $data["banco"]);
@@ -91,6 +93,8 @@ function salvar($data)
     $edita->bindValue(5, $data["observacoes"]);
     $edita->bindValue(6, $data["id"]);
     $edita->execute();
+
+    ActivityLogger::add("Editou a conta bancária \"" . $conta["conta"] . "-" . $conta["digito"] . "\" do banco " . $conta["banco"] . " para \"" . $data["conta"] . "-" . $data["digito"] . "\" do banco " . $data["banco"] . ".");
 
     die(json_encode(array("success" => true, "message" => "Conta bancária editada com sucesso!", "data" => obterBancosUsuario()), JSON_PRETTY_PRINT));
 }
@@ -141,9 +145,10 @@ function adicionar($data)
     $edita->bindValue(6, $data["observacoes"]);
     $edita->execute();
 
+    ActivityLogger::add("Adicionou a conta bancária \"" . $data["conta"] . "-" . $data["digito"] . "\" do banco " . $data["banco"] . ".");
+
     die(json_encode(array("success" => true, "message" => "Conta bancária adicionada com sucesso!", "data" => obterBancosUsuario()), JSON_PRETTY_PRINT));
 }
-
 
 function apagar($data)
 {
@@ -155,7 +160,7 @@ function apagar($data)
         die(json_encode(array("success" => false, "message" => "ID inválido!")));
     }
 
-    $verificaExiste = Database::connection()->prepare("SELECT id FROM bancos WHERE id = ? AND user_id = ?");
+    $verificaExiste = Database::connection()->prepare("SELECT id, banco, conta, digito FROM bancos WHERE id = ? AND user_id = ?");
     $verificaExiste->bindValue(1, $data["id"]);
     $verificaExiste->bindValue(2, $_SESSION["id"]);
     $verificaExiste->execute();
@@ -164,11 +169,15 @@ function apagar($data)
         die(json_encode(array("success" => false, "message" => "Conta bancária inválida!")));
     }
 
+    $conta = $verificaExiste->fetch();
+
     /* INSERIR CÓDIGO PARA REMOVER A CONTA DOS LANÇAMENTOS */
 
     $remover = Database::connection()->prepare("DELETE FROM bancos WHERE id = ?");
     $remover->bindValue(1, $data["id"]);
     $remover->execute();
+
+    ActivityLogger::add("Apagou a conta bancária \"" . $conta["conta"] . "-" . $conta["digito"] . "\" do banco " . $conta["banco"] . ".");
 
     die(json_encode(array("success" => true, "message" => "Conta bancária removida com sucesso!", "data" => obterBancosUsuario()), JSON_PRETTY_PRINT));
 }

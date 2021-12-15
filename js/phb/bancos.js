@@ -1,44 +1,64 @@
 var bancosList = {};
+var bancosBrasileiros = {};
 
-$("#bancos").DataTable({
-    "language": {
-        "url": '/js/datatables_pt_br.json'
-    },
-    "ajax": {
-        "url": "/api/bancos/get",
-        "dataType": "json",
-    },
-    "initComplete": function (settings, json) {
-        bancosList = json.data;
-    },
-    "columns": [{
-        data: null,
-        render: function (d, t, r) {
-            return htmlEncode(r.banco);
+$(document).ready(function () {
+    $.ajax({
+        url: "/api/bancos/listagem",
+        dataType: 'json',
+        success: function (data) {
+            if (data.success) {
+                bancosBrasileiros = data.data;
+                for (i = 0; i < data.data.length; i++) {
+                    if (data.data[i].code) $("select[name='banco']").append("<option value=\"" + data.data[i].code + "\">" + data.data[i].name + " - " + data.data[i].code + "</option>");
+                }
+            } else {
+                toastr.error(data.message);
+            }
         }
-    },
-    {
-        data: null,
-        render: function (d, t, r) {
-            return htmlEncode(r.agencia);
+    });
+
+    $("#bancos").DataTable({
+        "language": {
+            "url": '/js/datatables_pt_br.json'
+        },
+        "ajax": {
+            "url": "/api/bancos/get",
+            "dataType": "json",
+        },
+        "initComplete": function (settings, json) {
+            bancosList = json.data;
+        },
+        "columns": [{
+            data: null,
+            render: function (d, t, r) {
+                var banco = bancosBrasileiros.find(x => x.code == r.banco);
+                return htmlEncode(banco.code + " - " + banco.name);
+            }
+        },
+        {
+            data: null,
+            render: function (d, t, r) {
+                return htmlEncode(r.agencia);
+            }
+        },
+        {
+            data: null,
+            render: function (d, t, r) {
+                return String(r.conta).concat("-", r.digito);
+            }
+        },
+        {
+            data: "lancamentos"
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                return '<button type="button" class="btn btn-primary" title="Verificar lançamentos" onclick="lancamentos(' + row.id + ')"><i class="fas fa-eye"></i></button> <button type="button" class="btn btn-danger" title="Apagar" onclick="apagar(' + row.id + ')"><i class="fas fa-trash"></i></button> <button type="button" class="btn btn-secondary" title="Editar" onclick="editar(' + row.id + ')"><i class="fas fa-edit"></i></button>';
+            }
         }
-    },
-    {
-        data: null,
-        render: function (d, t, r) {
-            return String(r.conta).concat("-", r.digito);
-        }
-    },
-    {
-        data: "lancamentos"
-    },
-    {
-        data: null,
-        render: function (data, type, row) {
-            return '<button type="button" class="btn btn-primary" title="Verificar lançamentos" onclick="lancamentos(' + row.id + ')"><i class="fas fa-eye"></i></button> <button type="button" class="btn btn-danger" title="Apagar" onclick="apagar(' + row.id + ')"><i class="fas fa-trash"></i></button> <button type="button" class="btn btn-secondary" title="Editar" onclick="editar(' + row.id + ')"><i class="fas fa-edit"></i></button>';
-        }
-    }
-    ]
+        ]
+    });
+
 });
 
 function editar(id) {
@@ -173,20 +193,4 @@ $("#apagar").submit(function (e) {
         }
     });
 
-});
-
-$(document).ready(function () {
-    $.ajax({
-        url: "/api/bancos/listagem",
-        dataType: 'json',
-        success: function (data) {
-            if (data.success) {
-                for (i = 0; i < data.data.length; i++) {
-                    if (data.data[i].code) $("select[name='banco']").append("<option value=\"" + data.data[i].code + "\">" + data.data[i].name + " - " + data.data[i].code + "</option>");
-                }
-            } else {
-                toastr.error(data.message);
-            }
-        }
-    });
 });
