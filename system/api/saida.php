@@ -10,8 +10,8 @@ if (!isset($_SESSION["id"])) {
 
 match ($_GET["method"]) {
     "adicionar" => adicionar($_POST),
-    default => die(json_encode(["success" => false, "message" => "Invalid Method!"]));
-}
+    default => die(json_encode(["success" => false, "message" => "Invalid Method!"]))
+};
 
 function adicionar($data)
 {
